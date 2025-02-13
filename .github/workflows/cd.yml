@@ -51,6 +51,9 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'sudo docker pull eben3938/fastapi-app:latest
+            cd /home/ubuntu/fastapi-book-project
+            git fetch origin main 
+            git reset --hard origin/main
             sudo docker stop fastapi-app || true
             sudo docker rm fastapi-app || true
             sudo docker run -d -p 8000:8000 --name fastapi-app eben3938/fastapi-app:latest
